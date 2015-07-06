@@ -19,6 +19,6 @@
     "stof/doctrine-extensions-bundle": "~1.1@dev"
   },
   "autoload": {
-    "psr-4": { "Youshido\\CMSBundle\\": "" }
+    "psr-4": { "Youshido\\DoctrineExtensionBundle\\": "" }
   }
 }
