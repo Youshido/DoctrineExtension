@@ -17,6 +17,7 @@ Trait TimetrackableTrait
 
     /**
      * @var \DateTime
+     *
      * @Gedmo\Mapping\Annotation\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      */
@@ -24,6 +25,7 @@ Trait TimetrackableTrait
 
     /**
      * @var \DateTime
+     *
      * @Gedmo\Mapping\Annotation\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      */
