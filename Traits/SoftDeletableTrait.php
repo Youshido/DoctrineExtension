@@ -54,6 +54,16 @@ trait SoftDeletableTrait
     }
 
     /**
+     * Get deleted
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
      * @param boolean $deleted
      *
      * @return SoftDeletableTrait
