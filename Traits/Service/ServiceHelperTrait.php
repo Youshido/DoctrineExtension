@@ -29,7 +29,11 @@ trait ServiceHelperTrait
         $token = $this->getContainer()->get('security.token_storage')->getToken();
 
         if ($token) {
-            return $token->getUser();
+            $user = $token->getUser();
+
+            if (is_object($user)) {
+                return $user;
+            }
         }
 
         return null;
