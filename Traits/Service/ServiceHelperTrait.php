@@ -19,11 +19,13 @@ trait ServiceHelperTrait
 {
 
     /**
-     * @return object|null
+     * @param bool|true $throwException
+     *
+     * @return null|object
      *
      * @throws \Exception
      */
-    public function getUser()
+    public function getUser($throwException = true)
     {
         /** @var TokenInterface $token */
         $token = $this->getContainer()->get('security.token_storage')->getToken();
@@ -34,6 +36,10 @@ trait ServiceHelperTrait
             if (is_object($user)) {
                 return $user;
             }
+        }
+
+        if ($throwException) {
+            throw new \Exception('Access denied');
         }
 
         return null;
