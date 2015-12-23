@@ -39,7 +39,7 @@ trait ServiceHelperTrait
         }
 
         if ($throwException) {
-            throw new \Exception('Access denied');
+            throw new \Exception('Access denied', 403);
         }
 
         return null;
