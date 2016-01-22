@@ -15,13 +15,14 @@ class YoushidoDoctrineExtensionBundle extends Bundle
             ->get('doctrine.orm.entity_manager');
 
         $em->getConfiguration()
-            ->addFilter('scopable', 'Youshido\DoctrineExtensionBundle\Scopable\Filter\ScopableFilter');
+           ->addFilter('scopable', 'Youshido\DoctrineExtensionBundle\Scopable\Filter\ScopableFilter');
+        $em->getFilters()->enable('scopable');
 //        $configuration
 //            ->setDefaultQueryHint(
 //                Query::HINT_CUSTOM_OUTPUT_WALKER,
 //                'Youshido\DoctrineExtensionBundle\AesEncrypt\Walker\EncryptWalker'
 //            );
-        Type::addType('aes_encrypted', 'Youshido\ScopeBundle\Encrypt\Type\AesEncryptedType');
+        Type::addType('aes_encrypted', 'Youshido\DoctrineExtensionBundle\Encrypt\Type\AesEncryptedType');
 
         $em->getConnection()
            ->getDatabasePlatform()
