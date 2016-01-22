@@ -19,6 +19,6 @@ services:
 #      public: false
 
   scopable_service:
-    class: Youshido\DoctrineExtensionBundle\Service\ScopableService
+    class: Youshido\DoctrineExtensionBundle\Scopable\Service\ScopableService
     calls:
         - [ setContainer, [ @service_container ] ]

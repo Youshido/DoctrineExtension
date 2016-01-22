@@ -6,7 +6,7 @@
 * created: 1/12/16 10:08 PM
 */
 
-namespace Youshido\DoctrineExtensionBundle\Service;
+namespace Youshido\DoctrineExtensionBundle\Scopable\Service;
 
 
 use Symfony\Component\DependencyInjection\ContainerAware;
