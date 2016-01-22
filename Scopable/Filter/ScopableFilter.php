@@ -6,14 +6,14 @@
 * created: 1/12/16 8:57 PM
 */
 
-namespace Youshido\DoctrineExtension\Scopable\Filter;
+namespace Youshido\DoctrineExtensionBundle\Scopable\Filter;
 
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
-use Youshido\DoctrineExtension\Scopable\Annotation\Scopable;
-use Youshido\DoctrineExtension\Scopable\ScopableSubscriber;
+use Youshido\DoctrineExtensionBundle\Scopable\Annotation\Scopable;
+use Youshido\DoctrineExtensionBundle\Scopable\ScopableSubscriber;
 
 class ScopableFilter extends SQLFilter
 {

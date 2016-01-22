@@ -6,7 +6,7 @@
 * created: 1/12/16 10:28 PM
 */
 
-namespace Youshido\DoctrineExtension\Scopable\Annotation;
+namespace Youshido\DoctrineExtensionBundle\Scopable\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
 

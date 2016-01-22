@@ -3,7 +3,7 @@ parameters:
 
 services:
   youshido_scope.scopable.scopable_subscriber:
-      class: Youshido\ScopeBundle\Scopable\ScopableSubscriber
+      class: Youshido\DoctrineExtensionBundle\Scopable\ScopableSubscriber
       calls:
           - [ setAnnotationReader, [ @annotation_reader] ]
       tags:
@@ -11,7 +11,7 @@ services:
       public: false
 
   youshido_scope.encrypt.encrypt_subscriber:
-      class: Youshido\ScopeBundle\Encrypt\EncryptSubscriber
+      class: Youshido\DoctrineExtensionBundle\Encrypt\EncryptSubscriber
       calls:
           - [ setAnnotationReader, [ @annotation_reader] ]
       tags:
@@ -19,6 +19,6 @@ services:
       public: false
 
   scopable_service:
-    class: Youshido\ScopeBundle\Service\ScopableService
+    class: Youshido\DoctrineExtensionBundle\Service\ScopableService
     calls:
         - [ setContainer, [ @service_container ] ]

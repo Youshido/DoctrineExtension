@@ -6,7 +6,7 @@
 * created: 1/12/16 9:18 PM
 */
 
-namespace Youshido\DoctrineExtension\Scopable;
+namespace Youshido\DoctrineExtensionBundle\Scopable;
 
 
 use Doctrine\Common\EventArgs;
