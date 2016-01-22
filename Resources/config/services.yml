@@ -10,13 +10,13 @@ services:
           - { name: doctrine.event_subscriber }
       public: false
 
-  youshido_scope.encrypt.encrypt_subscriber:
-      class: Youshido\DoctrineExtensionBundle\Encrypt\EncryptSubscriber
-      calls:
-          - [ setAnnotationReader, [ @annotation_reader] ]
-      tags:
-          - { name: doctrine.event_subscriber }
-      public: false
+#  youshido_scope.encrypt.encrypt_subscriber:
+#      class: Youshido\DoctrineExtensionBundle\Encrypt\EncryptSubscriber
+#      calls:
+#          - [ setAnnotationReader, [ @annotation_reader] ]
+#      tags:
+#          - { name: doctrine.event_subscriber }
+#      public: false
 
   scopable_service:
     class: Youshido\DoctrineExtensionBundle\Service\ScopableService
