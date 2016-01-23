@@ -2,7 +2,7 @@ parameters:
     youshido.scopable.relation: workspace
 
 services:
-  youshido_scope.scopable.scopable_subscriber:
+  scopable_subscriber:
       class: Youshido\DoctrineExtensionBundle\Scopable\ScopableSubscriber
       calls:
           - [ setAnnotationReader, [ @annotation_reader] ]
@@ -10,13 +10,19 @@ services:
           - { name: doctrine.event_subscriber }
       public: false
 
-#  youshido_scope.encrypt.encrypt_subscriber:
-#      class: Youshido\DoctrineExtensionBundle\Encrypt\EncryptSubscriber
-#      calls:
-#          - [ setAnnotationReader, [ @annotation_reader] ]
-#      tags:
-#          - { name: doctrine.event_subscriber }
-#      public: false
+  aes_encrypt_subscriber:
+      class: Youshido\DoctrineExtensionBundle\AesEncrypt\EncryptSubscriber
+      calls:
+          - [ setAnnotationReader, [ @annotation_reader] ]
+      tags:
+          - { name: doctrine.event_subscriber }
+      public: false
+
+  aes_encrypt_service:
+    class: Youshido\DoctrineExtensionBundle\AesEncrypt\Service\EncryptService
+    calls:
+        - [ setContainer, [ @service_container ]]
+        - [ setKey ]
 
   scopable_service:
     class: Youshido\DoctrineExtensionBundle\Scopable\Service\ScopableService

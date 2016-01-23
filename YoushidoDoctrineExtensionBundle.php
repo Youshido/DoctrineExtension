@@ -22,8 +22,8 @@ class YoushidoDoctrineExtensionBundle extends Bundle
 //                Query::HINT_CUSTOM_OUTPUT_WALKER,
 //                'Youshido\DoctrineExtensionBundle\AesEncrypt\Walker\EncryptWalker'
 //            );
-        Type::addType('aes_encrypted', 'Youshido\DoctrineExtensionBundle\Encrypt\Type\AesEncryptedType');
-
+        Type::addType('aes_encrypted', 'Youshido\DoctrineExtensionBundle\AesEncrypt\Type\AesEncryptedType');
+        $this->container->get('aes_encrypt_service')->setKey();
         $em->getConnection()
            ->getDatabasePlatform()
            ->registerDoctrineTypeMapping('aes_encrypted', 'aes_encrypted');

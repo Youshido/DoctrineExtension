@@ -15,7 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class ScopableSubscriber implements EventSubscriber
 {
-    const SCOPABLE = 'Youshido\DoctrineExtension\Scopable\Annotation\Scopable';
+    const SCOPABLE = 'Youshido\DoctrineExtensionBundle\Scopable\Annotation\Scopable';
 
     /**
      * Static List of cached object configurations
