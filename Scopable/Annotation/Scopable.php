@@ -18,11 +18,6 @@ class Scopable
 {
 
     /**
-     * @var array<string>
-     */
-    private $fields;
-
-    /**
      * @var array<\Doctrine\ORM\Mapping\Entity>
      */
     private $models;
@@ -36,24 +31,11 @@ class Scopable
         return $this->models;
     }
 
-    /**
-     * @return array
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
-
     public function __construct($options)
     {
         if (!empty($options['models'])) {
             $this->models = $options['models'];
         }
-        if (!empty($options['fields'])) {
-            $this->fields = $options['fields'];
-        }
     }
-
-
 
 }

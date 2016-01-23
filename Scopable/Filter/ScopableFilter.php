@@ -32,17 +32,19 @@ class ScopableFilter extends SQLFilter
 
         try {
             $clauses = [];
-            if ($config->getFields()) {
-                foreach ($config->getFields() as $field) {
-                    $paramName = substr($field, 0, -3);
-                    if (!$this->getParameter($paramName) || ($this->getParameter($paramName) == "''")) continue;
+            if ($config->getModels()) {
+                foreach ($config->getModels() as $field) {
+                    if ($mapping = $targetEntity->getAssociationMapping($field)) {
+                        if (!$this->getParameter($field) || ($this->getParameter($field) == "''")) continue;
 
-                    $clauses[] = $targetTableAlias . '.' . $field . ' = ' . $this->getParameter($paramName);
+                        $clauses[] = $targetTableAlias . '.' . ($mapping['targetToSourceKeyColumns']['id']) . ' = ' . $this->getParameter($field);
+                    }
+
                 }
             }
             $res = implode(' AND ', $clauses);
         } catch (\Exception $e) {
-            echo "problem with " . $class .' '.$paramName.' ';
+            echo "problem with " . $class .' '.$field.' ';
         }
 
         return $res;
