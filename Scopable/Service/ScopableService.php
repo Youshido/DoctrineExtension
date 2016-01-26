@@ -10,6 +10,7 @@ namespace Youshido\DoctrineExtensionBundle\Scopable\Service;
 
 
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Youshido\DoctrineExtensionBundle\Scopable\Filter\ScopableFilter;
 
 class ScopableService extends ContainerAware
 {
@@ -18,9 +19,11 @@ class ScopableService extends ContainerAware
     public function setParameter($name, $value)
     {
         $this->_data[$name] = $value;
-        $this->container->get('doctrine')
-            ->getEntityManager()->getFilters()
-            ->getFilter('scopable')->setParameter($name, $value);
+        $filters             = $this->container->get('doctrine')
+                                              ->getEntityManager()->getFilters();
+        if ($filters->isEnabled(ScopableFilter::NAME)) {
+            $filters->getFilter(ScopableFilter::NAME)->setParameter($name, $value);
+        }
         return $this;
     }
 

@@ -4,6 +4,8 @@ namespace Youshido\DoctrineExtensionBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Youshido\DoctrineExtensionBundle\AesEncrypt\Type\AesEncryptedType;
+use Youshido\DoctrineExtensionBundle\Scopable\Filter\ScopableFilter;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
@@ -12,6 +14,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    const KEY = 'youshido_doctrine_extension_config';
+
     /**
      * {@inheritdoc}
      */
@@ -20,11 +24,15 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('youshido_doctrine_extension');
 
-//        $rootNode
-//            ->children()
-//                ->scalarNode('aes_encryption_key')->isRequired()
-//            ->end();
-
+        $rootNode
+            ->children()
+                ->arrayNode(AesEncryptedType::NAME)
+                    ->children()
+                        ->scalarNode('key')->end()
+                    ->end()
+                ->end()
+                ->booleanNode(ScopableFilter::NAME)->defaultFalse()->end()
+            ->end();
 
         return $treeBuilder;
     }

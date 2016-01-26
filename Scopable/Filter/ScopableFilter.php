@@ -18,6 +18,7 @@ use Youshido\DoctrineExtensionBundle\Scopable\ScopableSubscriber;
 class ScopableFilter extends SQLFilter
 {
 
+    const NAME = 'scopable';
     protected $listener;
     protected $entityManager;
 

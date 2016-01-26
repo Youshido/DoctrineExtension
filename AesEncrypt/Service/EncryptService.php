@@ -17,9 +17,9 @@ class EncryptService
 
     private static $encryptionKey;
 
-    public function setKey()
+    public function setKey($key)
     {
-        self::$encryptionKey = $this->container->getParameter('youshido.doctrine_extension.aes_key');
+        self::$encryptionKey = $key;
     }
 
     public static function getKey()

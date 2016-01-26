@@ -62,6 +62,11 @@ class AesEncryptedType extends Type
         return parent::getDefaultLength($platform);
     }
 
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
+
     public function getName()
     {
         return self::NAME;

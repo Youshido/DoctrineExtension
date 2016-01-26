@@ -22,7 +22,6 @@ services:
     class: Youshido\DoctrineExtensionBundle\AesEncrypt\Service\EncryptService
     calls:
         - [ setContainer, [ @service_container ]]
-        - [ setKey ]
 
   scopable_service:
     class: Youshido\DoctrineExtensionBundle\Scopable\Service\ScopableService
