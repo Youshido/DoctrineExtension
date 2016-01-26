@@ -24,7 +24,7 @@ class AesEncryptedType extends Type
 
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return "VARBINARY(255)";
+        return "VARBINARY(10000)";
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
