@@ -17,6 +17,7 @@ class AesEncryptedType extends Type
 {
     const NAME = "aes_encrypted";
 
+
     public function getKey()
     {
         return EncryptService::getKey();
@@ -24,7 +25,14 @@ class AesEncryptedType extends Type
 
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return "VARBINARY(10000)";
+        $length = empty($fieldDeclaration['length']) ? $this->getDefaultLength($platform) : $fieldDeclaration['length'];
+
+        return "VARBINARY(" . $length . ")";
+    }
+
+    public function getDefaultLength(AbstractPlatform $platform)
+    {
+        return 255;
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
@@ -37,10 +45,6 @@ class AesEncryptedType extends Type
         return parent::convertToPHPValue($value, $platform);
     }
 
-    public function canRequireSQLConversion()
-    {
-        return true;
-    }
 
     public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
     {
@@ -57,10 +61,6 @@ class AesEncryptedType extends Type
         return 'AES_DECRYPT(' . $sql . ', "' . $this->getKey() . '")';
     }
 
-    public function getDefaultLength(AbstractPlatform $platform)
-    {
-        return parent::getDefaultLength($platform);
-    }
 
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {

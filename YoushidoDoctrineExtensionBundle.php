@@ -19,9 +19,12 @@ class YoushidoDoctrineExtensionBundle extends Bundle
 
         // scopable
         if (!empty($config[ScopableFilter::NAME]) && $config[ScopableFilter::NAME]) {
-            $em->getConfiguration()
-               ->addFilter(ScopableFilter::NAME, 'Youshido\DoctrineExtensionBundle\Scopable\Filter\ScopableFilter');
-            $em->getFilters()->enable(ScopableFilter::NAME);
+            // check for cache:clear command
+            if (!$em->getFilters()->has(ScopableFilter::NAME)) {
+                $em->getConfiguration()
+                   ->addFilter(ScopableFilter::NAME, 'Youshido\DoctrineExtensionBundle\Scopable\Filter\ScopableFilter');
+                $em->getFilters()->enable(ScopableFilter::NAME);
+            }
         }
 
 //        $configuration
@@ -31,11 +34,14 @@ class YoushidoDoctrineExtensionBundle extends Bundle
 //            );
         // aes_encrypt
         if (!empty($config[AesEncryptedType::NAME]) && $config[AesEncryptedType::NAME]) {
-            Type::addType(AesEncryptedType::NAME, 'Youshido\DoctrineExtensionBundle\AesEncrypt\Type\AesEncryptedType');
-            $this->container->get('aes_encrypt_service')->setKey($config[AesEncryptedType::NAME]['key']);
-            $em->getConnection()
-               ->getDatabasePlatform()
-               ->registerDoctrineTypeMapping(AesEncryptedType::NAME, 'aes_encrypted');
+            // check for cache:clear command
+            if (!Type::hasType(AesEncryptedType::NAME)) {
+                Type::addType(AesEncryptedType::NAME, 'Youshido\DoctrineExtensionBundle\AesEncrypt\Type\AesEncryptedType');
+                $this->container->get('aes_encrypt_service')->setKey($config[AesEncryptedType::NAME]['key']);
+                $em->getConnection()
+                   ->getDatabasePlatform()
+                   ->registerDoctrineTypeMapping(AesEncryptedType::NAME, 'aes_encrypted');
+            }
 
         }
     }
