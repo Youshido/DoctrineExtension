@@ -61,6 +61,10 @@ class AesEncryptedType extends Type
         return 'AES_DECRYPT(' . $sql . ', "' . $this->getKey() . '")';
     }
 
+    public function canRequireSQLConversion()
+    {
+        return true;
+    }
 
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
