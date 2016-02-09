@@ -27,7 +27,7 @@ class AesEncryptedType extends Type
     {
         $length = empty($fieldDeclaration['length']) ? $this->getDefaultLength($platform) : $fieldDeclaration['length'];
 
-        return "VARBINARY(" . $length . ")";
+        return $length > 255 ? "BLOB" : "VARBINARY(" . $length . ")";
     }
 
     public function getDefaultLength(AbstractPlatform $platform)
