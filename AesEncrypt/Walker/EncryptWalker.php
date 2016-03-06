@@ -146,7 +146,7 @@ class EncryptWalker extends SqlWalker
         foreach ($this->replacements as $replacement) {
             foreach ($replacement['fields'] as $field) {
                 $sql = str_replace($replacement['aliasTable'] . '.' . $field,
-                                   'AES_DECRYPT(' . $replacement['aliasTable'] . '.' . $field . ', "' . EncryptService::getKey() . '")',
+                                   'CAST(AES_DECRYPT(' . $replacement['aliasTable'] . '.' . $field . ', "' . EncryptService::getKey() . '") AS CHAR)',
                                    $sql);
             }
         }
