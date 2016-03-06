@@ -58,7 +58,7 @@ class AesEncryptedType extends Type
     {
         $sql = parent::convertToPHPValueSQL($sqlExpr, $platform);
 
-        return 'AES_DECRYPT(' . $sql . ', "' . $this->getKey() . '")';
+        return 'CAST(AES_DECRYPT(' . $sql . ', "' . $this->getKey() . '") AS CHAR)';
     }
 
     public function canRequireSQLConversion()
