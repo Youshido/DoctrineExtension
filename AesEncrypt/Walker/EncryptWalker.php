@@ -24,21 +24,21 @@ use Youshido\DoctrineExtensionBundle\AesEncrypt\EncryptSubscriber;
 class EncryptWalker extends SqlWalker
 {
 
-    private   $conn;
-    private   $em;
-    private   $query;
-    private   $queryComponents;
+    private $conn;
+    private $em;
+    private $query;
+    private $queryComponents;
     protected $listener;
-    private   $rsm;
-    private   $quoteStrategy;
-    private   $platform;
+    private $rsm;
+    private $quoteStrategy;
+    private $platform;
 
     private $replacements = [];
 
     public function __construct($query, $parserResult, array $queryComponents)
     {
         parent::__construct($query, $parserResult, $queryComponents);
-        $this->query = $query;
+        $this->query           = $query;
         $this->queryComponents = $queryComponents;
         $this->rsm             = $parserResult->getResultSetMapping();
         $this->em              = $query->getEntityManager();
@@ -55,17 +55,17 @@ class EncryptWalker extends SqlWalker
                 $className = $declaration->rangeVariableDeclaration->abstractSchemaName;
                 $class     = $this->em->getClassMetadata($declaration->rangeVariableDeclaration->abstractSchemaName);
                 /** @var Encrypt $config */
-                $config    = $this->getListener()->getConfiguration($this->getEntityManager(), $className);
+                $config = $this->getListener()->getConfiguration($this->getEntityManager(), $className);
                 if (!$config) continue;
 
                 $tableAlias = $this->getSQLTableAlias($class->getTableName(), $declaration->rangeVariableDeclaration->aliasIdentificationVariable);
 
                 $this->addReplacement([
-                                          'class'       => $className,
-                                          'aliasTable'  => $tableAlias,
-                                          'aliasEntity' => $declaration->rangeVariableDeclaration->aliasIdentificationVariable,
-                                          'fields'      => $config->getFields(),
-                                      ]);
+                    'class'       => $className,
+                    'aliasTable'  => $tableAlias,
+                    'aliasEntity' => $declaration->rangeVariableDeclaration->aliasIdentificationVariable,
+                    'fields'      => $config->getFields(),
+                ]);
             }
         }
 
@@ -78,51 +78,6 @@ class EncryptWalker extends SqlWalker
     {
         $sql = parent::walkWhereClause($whereClause);
         $sql = $this->applyReplacements($sql);
-
-        return $sql;
-    }
-
-    public function walkJoin($join)
-    {
-        $sql = parent::walkJoin($join);
-
-        return $sql;
-        $joinType        = $join->joinType;
-        $joinDeclaration = $join->joinAssociationDeclaration;
-
-        switch (true) {
-            case ($joinDeclaration instanceof RangeVariableDeclaration):
-                $class      = $this->em->getClassMetadata($joinDeclaration->abstractSchemaName);
-                $dqlAlias   = $joinDeclaration->aliasIdentificationVariable;
-                $tableAlias = $this->getSQLTableAlias($class->table['name'], $dqlAlias);
-
-                break;
-
-            case ($joinDeclaration instanceof JoinAssociationDeclaration):
-
-                $associationPathExpression = $joinDeclaration->joinAssociationPathExpression;
-                $joinedDqlAlias            = $joinDeclaration->aliasIdentificationVariable;
-//                $indexBy                   = $joinDeclaration->indexBy;
-
-                $relation    = $this->queryComponents[$joinedDqlAlias]['relation'];
-                $targetClass = $this->em->getClassMetadata($relation['targetEntity']);
-                $sourceClass = $this->em->getClassMetadata($relation['sourceEntity']);
-
-                if ($targetClass->getName() == 'AppBundle\Entity\TimeEntry') {
-                    $targetTableAlias = $this->getSQLTableAlias($targetClass->getTableName(), $joinedDqlAlias);
-//                    $sourceTableAlias = $this->getSQLTableAlias($sourceClass->getTableName(), $associationPathExpression->identificationVariable);
-
-                    $fields = ['title'];
-
-                    $this->addReplacement(
-                        [
-                            'class'  => $targetClass->getName(),
-                            'aliasTable'  => $targetTableAlias,
-                            'fields' => $fields,
-                        ]);
-                }
-                break;
-        }
 
         return $sql;
     }
@@ -146,8 +101,8 @@ class EncryptWalker extends SqlWalker
         foreach ($this->replacements as $replacement) {
             foreach ($replacement['fields'] as $field) {
                 $sql = str_replace($replacement['aliasTable'] . '.' . $field,
-                                   'CAST(AES_DECRYPT(' . $replacement['aliasTable'] . '.' . $field . ', "' . EncryptService::getKey() . '") AS CHAR)',
-                                   $sql);
+                    'CAST(AES_DECRYPT(' . $replacement['aliasTable'] . '.' . $field . ', "' . EncryptService::getKey() . '") AS CHAR)',
+                    $sql);
             }
         }
 

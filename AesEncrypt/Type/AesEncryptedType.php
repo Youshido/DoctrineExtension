@@ -10,6 +10,8 @@ namespace Youshido\DoctrineExtensionBundle\AesEncrypt\Type;
 
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQL91Platform;
+use Doctrine\DBAL\Platforms\PostgreSQL92Platform;
 use Doctrine\DBAL\Types\Type;
 use Youshido\DoctrineExtensionBundle\AesEncrypt\Service\EncryptService;
 
@@ -27,12 +29,21 @@ class AesEncryptedType extends Type
     {
         $length = empty($fieldDeclaration['length']) ? $this->getDefaultLength($platform) : $fieldDeclaration['length'];
 
+        if ($this->isPostgreSQL($platform)) {
+            return 'BYTEA';
+        }
+
         return $length > 1000 ? "MEDIUMBLOB" : "VARBINARY(" . $length . ")";
     }
 
     public function getDefaultLength(AbstractPlatform $platform)
     {
         return 255;
+    }
+
+    private function isPostgreSQL($platform)
+    {
+        return $platform instanceof PostgreSQL92Platform || $platform instanceof PostgreSQL91Platform;
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
@@ -50,6 +61,10 @@ class AesEncryptedType extends Type
     {
         $sql = parent::convertToDatabaseValueSQL($sqlExpr, $platform);
 
+        if ($this->isPostgreSQL($platform)) {
+            return 'encrypt(' . $sql . ', \'' . $this->getKey() . '\', \'aes\')';
+        }
+
         return 'AES_ENCRYPT(' . $sql . ', "' . $this->getKey() . '")';
     }
 
@@ -57,6 +72,10 @@ class AesEncryptedType extends Type
     public function convertToPHPValueSQL($sqlExpr, $platform)
     {
         $sql = parent::convertToPHPValueSQL($sqlExpr, $platform);
+
+        if ($this->isPostgreSQL($platform)) {
+            return 'encode(decrypt(' . $sql . ', \'' . $this->getKey() . '\', \'aes\'), \'escape\')';
+        }
 
         return 'CAST(AES_DECRYPT(' . $sql . ', "' . $this->getKey() . '") AS CHAR)';
     }
@@ -75,6 +94,4 @@ class AesEncryptedType extends Type
     {
         return self::NAME;
     }
-
-
 }
