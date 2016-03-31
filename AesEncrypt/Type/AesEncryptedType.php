@@ -62,7 +62,7 @@ class AesEncryptedType extends Type
         $sql = parent::convertToDatabaseValueSQL($sqlExpr, $platform);
 
         if ($this->isPostgreSQL($platform)) {
-            return sprintf('encrypt(%s, \'%s\', \'aes\')', $sql, $this->getKey());
+            return sprintf('encrypt(convert_to(%s, \'SQL_ASCII\'), \'%s\', \'aes\')', $sql, $this->getKey());
         }
 
         return 'AES_ENCRYPT(' . $sql . ', "' . $this->getKey() . '")';
@@ -74,7 +74,7 @@ class AesEncryptedType extends Type
         $sql = parent::convertToPHPValueSQL($sqlExpr, $platform);
 
         if ($this->isPostgreSQL($platform)) {
-            return sprintf('convert_from(decrypt(%s, \'%s\', \'aes\'), \'SQL_ASCII\')', $sql, $this->getKey());
+            return sprintf('convert_from(decrypt(%s::BYTEA, \'%s\', \'aes\'), \'SQL_ASCII\')', $sql, $this->getKey());
         }
 
         return 'CAST(AES_DECRYPT(' . $sql . ', "' . $this->getKey() . '") AS CHAR)';
